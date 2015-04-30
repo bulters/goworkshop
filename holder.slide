@@ -1,0 +1,314 @@
+Go 
+1 Mei 2015
+
+* Vandaag
+
+- Wat is Go
+- Waarom Go
+- Go Toolchain
+- Language Walkthrough
+- Ecosystem
+- Vieze handen
+
+* Wat is Go
+
+  Go, also commonly referred to as golang, is a programming language initially
+  developed at Google in 2007 by Robert Griesemer, Rob Pike, and Ken
+  Thompson.
+  
+  It is a statically-typed language with syntax loosely derived from
+  that of C, adding garbage collection, type safety, some dynamic-typing
+  capabilities, additional built-in types such as variable-length arrays and
+  key-value maps, and a large standard library.
+
+* Wat is Go
+
+- Staticly typed
+
+Een variabele kent een type dat eenmaal vastgelegd ook vast staat (er is
+echter ook een generiek type, later meer). Go is wel "object-georrienteerd"
+echter niet zoals in Java/Ruby.
+
+- Compiled
+
+Compilen levert een binary op (makkelijk deploybaar), runtime reflectie
+is nog wel mogelijk.
+
+- Simple
+
+Niet per definitie makkelijk om te schrijven, wel duidelijk, expliciet en
+zonder verrassingen.
+
+* Wat is Go Niet
+- Een vervanging van Ruby!
+Hoewel in runtime sneller is het ontwikkelen van Go applicaties niet per
+definitie sneller. Onderhoud daarentegen is - mijns inziens - eenvoudiger.
+
+- Magisch
+In Ruby is het mogelijk om mooie DSL's te bouwen waardoor je code er mooi
+uit ziet. In Go doe je dit *niet*. 
+
+- Kort van stof
+Go dwingt je om expliciet te zijn; je hebt meer boilerplate nodig dan in
+e.g. Ruby.
+
+* Go Toolchain
+
+- go get
+
+packages installeren, e.g.:
+
+   go get github.com/bulters/readyset
+
+- go install
+
+package in huidige directory (en dependencies) installeren.
+
+- go fmt
+
+alle files opmaken volgens de go standaard!
+
+- go run
+
+compileer en run een bepaalde file.
+
+* Go Toolchain
+
+- go build
+
+compileer package in huidige directory.
+
+- go test
+
+draai tests for huidige directory.
+- go ...
+
+vet, lint, doc
+
+* Language Walkthrough
+
+- packages
+- functions
+- types
+- structs
+- interfaces
+- channels
+
+* Packages
+Iedere applicatie heeft een `package main`
+
+.play ex1/ex1.go
+
+* Functions
+
+.play ex2/ex2.go /BEGIN FUN/,/END FUN/
+* Types
+
+- basis
+    int, uint, int8, uint8, ...
+    bool, string
+    float32, float64
+    complex64, complex128
+
+* Structs
+
+.play ex2/ex2.go /BEGIN STRUCT/,/END STRUCT/
+
+Een struct bestaat in beginsel uit de data componenten van een ruby class.
+
+* Public / Private
+
+In Go is er een simpele manier om dingen private of public te maken.
+
+    private
+
+Met een kleine letter defineer je een variabele, functie, struct-veld die
+niet publiek toegangkelijk is.
+
+    Public
+
+Met een hoofdletter defineer je een variabele, functie, struct-veld dat
+van buiten toegangkelijk is. Hierbij is buiten: andere packages of van buiten
+een struct functie (later meer).
+
+* Interfaces
+
+.play ex3/ex3.go /BEGIN IF/,/END IF/
+
+.play ex3/ex3.go /BEGIN IFI/,/END IFI/
+
+* Arrays/Slices
+
+.play ex3/ex3.go /BEGIN ARRAY/,/END ARRAY/
+
+Array's zijn getyped, altijd.
+
+In dit geval een array (`[]`) van het type `Renderer`
+
+Wil je een array van willekeurige typen?
+
+    // Use the empty interface.
+    var garbage []interface{}
+
+Geen _type_safety_
+
+* Control structures
+
+.play ex3/ex3.go /BEGIN COND/,/END COND/
+.play ex3/ex3.go /BEGIN FOR/,/END FOR/
+
+* Pointers
+
+Pointers zijn eng, gevaarlijk, moeilijk, gevaarlijk, bron van fouten, eng.
+
+Makkelijk in Go, want: _geen_pointer_arithmetic_
+
+- Een pointer bevat het adres van een andere variabele.
+- Het adres van een variabele verkrijg je met: `&`
+- De waarde van een adres vraag je op (dereference) met `*`
+
+* Pointers
+.play ex4/ex4.go
+
+* Go routines
+
+- Out of the box concurrency
+- Vergelijkbaar met green threads, maar zonder GIL.
+- Eenvoudig te gebruiken.
+
+    // Normale functie aanroep
+    someFunction()
+
+    // zelfde functie in eigen goroutine
+    go someFunction()
+    
+    // ...
+    // There is no step 2
+    // Look at all the stuff I'm not doing
+
+* Channels
+Een channel is een kanaal om data over te versturen van een bepaald type
+(inclusief `interface{}`)
+
+Handig voor communicatie tussen goroutines.
+
+Channels kennen een input en output constructie
+
+- Channel in
+
+  done <- true
+
+- Channel uit
+
+  <-done
+
+* Channels
+
+.play ex5/ex5.go
+
+* Wat niet?
+
+Veel, maar laaghangend fruit:
+
+- Exceptions
+- Generics
+
+maar: 
+
+- panic/recover (vandaag verder niet)
+- error
+
+    func Process(someInput string) string, error {
+      if err := SomeFunction(someInput), err != nil {
+        // process error
+        return nil, err
+      }
+      // continue processing.
+      return result, nil
+    }
+
+.link http://godoc.org/errors
+
+* Ecosystem
+
+- Nadruk op eenvoudig
+Weinig slimmigheden in de taal; de hele spec is te lezen en te begrijpen
+(probeer die van ruby maar eens te lezen).
+
+- Zelf aan elkaal sleutelen.
+Go kent wel frameworks maar deze worden gezien als *niet idiomatisch*. De
+nadruk ligt vooral op kleine libraries die een ding doen.
+
+- COMPLETE STD. LIB.
+  - `net/http` `net/mail`
+  - `archive/zip`, `compress/gzip`
+  - `text/template`, `html/template`
+  -  enz enz enz
+
+.link https://golang.org/pkg/
+
+* Vieze handen
+
+- KVK Uittreksel
+- Web based
+- Web service consumptie
+- PDF Genereren?
+
+* Libraries
+
+- Standard Library
+
+.link https://godoc.org/net/http
+.link https://godoc.org/html/template
+.link https://godoc.org/encoding/json
+
+- Optioneel 
+
+.link https://github.com/justinas/nosurf
+.link https://github.com/signintech/gopdf
+
+* HTTP Server
+
+Gebruik `net/http` package
+
+.play ex6/ex6.go /BEGIN MAIN/,/END MAIN/
+
+* Template Renderen
+
+Gebruik `html/template`
+
+.code ex6/ex6.go /BEGIN ROOT/,/END ROOT/
+
+.code template/root.html
+
+* Form input parsen
+
+Functionaliteit uit `net/http`
+
+.code ex6/ex6.go /BEGIN LOOKUP/,/END LOOKUP/
+
+* JSON Decoden
+
+Gebruik `encoding/json`
+
+.code ex6/ex6.go /BEGIN RESULTWRAP/,/END RESULTWRAP/
+
+* API Call & JSON Decoden
+
+.code ex6/ex6.go /BEGIN API/,/END API/
+
+* API Key over overheid.io
+
+.code ex6/ex6.go /BEGIN APKEY/,/END APKEY/
+
+* Alle Imports
+
+.code ex6/ex6.go /BEGIN IMPORTS/,/END IMPORTS/
+
+Enkel standard library
+
+* Meer materiaal
+
+- https://gobyexample.com/
+- http://godoc.org/-/go 
+- https://golang.org/ref/spec

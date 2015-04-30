@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Super Simple KvK Lookup</title>
+  </head>
+  <body>
+    <form action="/lookup">
+      <label for="q">
+      <input type="text" name="q" placeholder="Search Query">
+      <input type="submit" value="search">
+    </form>
+    <hr>
+    <h1>Results</h1>
+    <ul>
+    {{ range .Results }}
+      <li>{{ .Name }}</li>  
+    {{ end }}
+    </ul>
+  </body>
+</html>
